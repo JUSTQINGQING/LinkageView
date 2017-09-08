@@ -4,6 +4,7 @@
 ## Support
 
 * 支持snpkit框架
+* 两种页面切换效果
 * 支持修改各种颜色
 * 支持自定义组件内容
 * 支持两种菜单多屏及单屏
@@ -23,6 +24,12 @@ headerView = LVHeaderView.init(styleMore: false)
 headerView = LVHeaderView.init(styleMore: true)
 ```
 ![多屏菜单.gif](http://upload-images.jianshu.io/upload_images/5075721-08f3ace12d1f64af.gif?imageMogr2/auto-orient/strip)
+------------------
+```swift
+//放大缩小切换效果效果 默认styleLine为 true 即滚动条效果
+headerView = LVHeaderView.init(styleMore: true, styleLine: false)
+```
+![放大缩小切换效果.gif](http://upload-images.jianshu.io/upload_images/5075721-0862ef0c64bac478.gif?imageMogr2/auto-orient/strip)
 ------------------
 
 具体使用
