@@ -10,11 +10,13 @@ import UIKit
 
 let LVWidth = UIScreen.main.bounds.width
 let LVHeight = UIScreen.main.bounds.height
-//普通字体颜色 及 选中颜色
-let normalColor = UIColor.init(colors: [66,66,66])
-let selectedColor = UIColor.init(colors: [211, 75, 64])
+//普通字体颜色 及 选中颜色 RGB数值
+let normalColor = RGBColor(red: 66, green: 66, blue: 66)
+let selectedColor = RGBColor(red: 198, green: 40, blue: 40)
 //滑动条比标题宽多少
 let lineWeightEdge: CGFloat = 10.0
+
+
 
 protocol LVHeaderViewDelegate: NSObjectProtocol {
     func selectdLVHeaderView(view: LVHeaderView, selectedIndex: Int)
@@ -22,6 +24,7 @@ protocol LVHeaderViewDelegate: NSObjectProtocol {
 
 class LVHeaderView: UIView {
     
+
     fileprivate var LVscrollView: LVScrollView!
     
     weak var delegate: LVHeaderViewDelegate?
@@ -32,12 +35,16 @@ class LVHeaderView: UIView {
         }
     }
     
-    var styleMore: Bool? 
+    var styleMore: Bool?
+    var styleLine: Bool?
     
-    init(styleMore: Bool = false) {
+    init(styleMore: Bool = false, styleLine: Bool = true) {
         self.styleMore = styleMore
+        self.styleLine = styleLine
+        
         super.init(frame: CGRect())
-        backgroundColor = UIColor.init(colors: [249,249,251])
+        
+        backgroundColor = getColor(RGBColor(red: 249, green: 249, blue: 251))
         setupUI()
     }
     
@@ -48,6 +55,7 @@ class LVHeaderView: UIView {
     func setupUI() {
         LVscrollView = LVScrollView()
         LVscrollView.style = styleMore
+        LVscrollView.styleLine = styleLine
         addSubview(LVscrollView)
         LVscrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
@@ -79,8 +87,10 @@ fileprivate class LVScrollView: UIScrollView {
             }
         }
     }
-//    修改样式 false 是 很多条连续排列 true 是平分屏宽排列
+    //修改样式 false 是 很多条连续排列 true 是平分屏宽排列
     var style: Bool?
+    //是下划线还是放大字体
+    var styleLine: Bool?
     
     var lineView: UIView?
     
@@ -101,9 +111,10 @@ fileprivate class LVScrollView: UIScrollView {
             let button = UIButton()
             button.tag = index
             button.setTitle(menu, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
             button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
-            button.setTitleColor(normalColor, for: .normal)
+            button.setTitleColor(getColor(normalColor), for: .normal)
+            if !styleLine! { button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8) }
             addSubview(button)
             button.snp.makeConstraints({[unowned self] (make) in
                 make.centerY.equalToSuperview()
@@ -121,8 +132,12 @@ fileprivate class LVScrollView: UIScrollView {
                 }
             })
         }
+        if styleLine! { setupLineView() }
+    }
+    
+    func setupLineView() {
         lineView = UIView()
-        lineView?.backgroundColor = selectedColor
+        lineView?.backgroundColor = getColor(selectedColor)
         self.addSubview(lineView!)
         let currentButton = subviews[0] as! UIButton
         lineView?.snp.makeConstraints({(make) in
@@ -131,7 +146,6 @@ fileprivate class LVScrollView: UIScrollView {
             make.width.equalTo(currentButton).offset(lineWeightEdge)
             make.top.equalTo(38)
         })
-        
     }
     
     func buttonClicked(sender: UIButton) {
@@ -153,15 +167,49 @@ fileprivate class LVScrollView: UIScrollView {
         if currentIndex == toIndex && currentIndex != 0{ return }
         let currentButton = subviews[currentIndex] as! UIButton
         if toIndex == 0 && currentIndex == 0{
-            currentButton.setTitleColor(selectedColor, for: .normal)
+            currentButton.setTitleColor(getColor(selectedColor), for: .normal)
+            if !styleLine! { currentButton.transform = CGAffineTransform(scaleX: 1, y: 1) }
             return
         }
         let desButton = subviews[toIndex] as! UIButton
-        currentButton.setTitleColor(normalColor, for: .normal)
-        desButton.setTitleColor(selectedColor, for: .normal)
+        currentButton.setTitleColor(getColor(normalColor), for: .normal)
+        desButton.setTitleColor(getColor(selectedColor), for: .normal)
+        if !styleLine! { desButton.transform = CGAffineTransform(scaleX: 1, y: 1) }
+        if !styleLine! { currentButton.transform = CGAffineTransform(scaleX: 0.8, y: 0.8) }
+        headerViewScroll(scrollX: desButton.frame.midX - LVWidth/2)
+        self.currentIndex = toIndex
+    }
+    
+    func scrollTodo(nowPage:Int, fromIndex: Int ,toIndex: Int, scale: CGFloat) {
         
-        let scrollX = desButton.frame.midX - LVWidth/2
+        let currentButton = subviews[fromIndex] as! UIButton
+        let toButton = subviews[toIndex] as! UIButton
         
+        if styleLine! {
+            let diffX = scale*(toButton.center.x-currentButton.center.x)
+            let diffW = scale*(toButton.frame.width-currentButton.frame.width)
+            
+            self.lineView?.snp.remakeConstraints({(make) in
+                make.width.equalTo(currentButton.frame.width+diffW+lineWeightEdge)
+                make.centerX.equalTo(currentButton.center.x + diffX)
+                make.height.equalTo(2)
+                make.top.equalTo(38)
+            })
+            if nowPage == currentIndex {
+                return
+            }
+            selectButton(currectIndex: currentIndex, toIndex: nowPage)
+        } else {
+            currentButton.setTitleColor(changeColor(from: selectedColor, to: normalColor, scale: scale), for: .normal)
+            currentButton.transform = CGAffineTransform(scaleX: CGFloat(1 - 0.2 * scale), y: CGFloat(1 - 0.2 * scale))
+            toButton.setTitleColor(changeColor(from: normalColor, to: selectedColor, scale: scale), for: .normal)
+            toButton.transform = CGAffineTransform(scaleX: CGFloat(0.8 + 0.2 * scale), y: CGFloat(0.8 + 0.2 * scale))
+            headerViewScroll(scrollX: toButton.frame.midX - LVWidth/2)
+            self.currentIndex = toIndex
+        }
+    }
+    
+    func headerViewScroll(scrollX: CGFloat) {
         if scrollX > 0 && scrollX < self.contentSize.width - LVWidth{
             let scrollOffset = CGPoint(x: scrollX, y: 0)
             self.setContentOffset(scrollOffset, animated: true)
@@ -172,26 +220,24 @@ fileprivate class LVScrollView: UIScrollView {
             let scrollOffset = CGPoint(x: self.contentSize.width - LVWidth, y: 0)
             self.setContentOffset(scrollOffset, animated: true)
         }
-        self.currentIndex = toIndex
-    }
-    
-    func scrollTodo(nowPage:Int, fromIndex: Int ,toIndex: Int, scale: CGFloat) {
-        
-        let currentButton = subviews[fromIndex] as! UIButton
-        let toButton = subviews[toIndex] as! UIButton
-        let diffX = scale*(toButton.center.x-currentButton.center.x)
-        let diffW = scale*(toButton.frame.width-currentButton.frame.width)
-
-        self.lineView?.snp.remakeConstraints({(make) in
-            make.width.equalTo(currentButton.frame.width+diffW+lineWeightEdge)
-            make.centerX.equalTo(currentButton.center.x + diffX)
-            make.height.equalTo(2)
-            make.top.equalTo(38)
-        })
-        
-        if nowPage == currentIndex {
-            return
-        }
-        selectButton(currectIndex: currentIndex, toIndex: nowPage)
     }
 }
+
+struct RGBColor {
+    var red: CGFloat
+    var green: CGFloat
+    var blue: CGFloat
+}
+
+func getColor(_ color: RGBColor) -> UIColor {
+    return UIColor.init(red: color.red/255.0, green: color.green/255.0, blue: color.blue/255.0, alpha: 1)
+}
+
+func changeColor(from: RGBColor, to: RGBColor, scale: CGFloat) -> UIColor {
+    let redDiff = (to.red - from.red) * scale + from.red
+    let blueDiff = (to.blue - from.blue) * scale + from.blue
+    let greenDiff = (to.green - from.green) * scale + from.green
+    return UIColor.init(red: redDiff/255.0, green: greenDiff/255.0, blue: blueDiff/255.0, alpha: 1)
+}
+    
+

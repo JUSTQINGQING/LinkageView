@@ -16,14 +16,14 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.barStyle = .blackTranslucent;
-        navigationController?.navigationBar.barTintColor = UIColor.init(colors: [211, 47, 47])
+        navigationController?.navigationBar.barTintColor = getColor(selectedColor)
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         automaticallyAdjustsScrollViewInsets = false
         view.backgroundColor = UIColor.white
         
-        let arr = ["个性推荐", "歌单", "主播平台", "排行榜"]
+        let arr = ["个性推荐", "歌单", "主播平台", "排行榜", "个性推荐", "歌单", "主播平台", "排行榜"]
         
-        headerView = LVHeaderView.init(styleMore: false)
+        headerView = LVHeaderView.init(styleMore: true, styleLine: false)
         view.addSubview(headerView)
         headerView.delegate = self
         headerView.dataAry = arr

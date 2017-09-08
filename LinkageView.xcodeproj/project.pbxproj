@@ -12,7 +12,6 @@
 		442ADDBB1F612AFF002A16E4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442ADDB91F612AFF002A16E4 /* Main.storyboard */; };
 		442ADDBD1F612AFF002A16E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 442ADDBC1F612AFF002A16E4 /* Assets.xcassets */; };
 		442ADDC01F612AFF002A16E4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 442ADDBE1F612AFF002A16E4 /* LaunchScreen.storyboard */; };
-		442ADDEE1F612B4F002A16E4 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442ADDC71F612B4F002A16E4 /* ColorExtension.swift */; };
 		442ADDEF1F612B4F002A16E4 /* LVCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442ADDC81F612B4F002A16E4 /* LVCollectionViewCell.swift */; };
 		442ADDF01F612B4F002A16E4 /* LVContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442ADDC91F612B4F002A16E4 /* LVContentView.swift */; };
 		442ADDF11F612B4F002A16E4 /* LVHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442ADDCA1F612B4F002A16E4 /* LVHeaderView.swift */; };
@@ -59,7 +58,6 @@
 		442ADDBC1F612AFF002A16E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		442ADDBF1F612AFF002A16E4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		442ADDC11F612AFF002A16E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		442ADDC71F612B4F002A16E4 /* ColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		442ADDC81F612B4F002A16E4 /* LVCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LVCollectionViewCell.swift; sourceTree = "<group>"; };
 		442ADDC91F612B4F002A16E4 /* LVContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LVContentView.swift; sourceTree = "<group>"; };
 		442ADDCA1F612B4F002A16E4 /* LVHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LVHeaderView.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 			children = (
 				442ADDB51F612AFF002A16E4 /* AppDelegate.swift */,
 				442ADDB71F612AFF002A16E4 /* ViewController.swift */,
-				442ADDC71F612B4F002A16E4 /* ColorExtension.swift */,
 				442ADDC81F612B4F002A16E4 /* LVCollectionViewCell.swift */,
 				442ADDC91F612B4F002A16E4 /* LVContentView.swift */,
 				442ADDCA1F612B4F002A16E4 /* LVHeaderView.swift */,
@@ -274,7 +271,6 @@
 				442ADE001F612B4F002A16E4 /* ConstraintLayoutSupportDSL.swift in Sources */,
 				442ADDFD1F612B4F002A16E4 /* ConstraintLayoutGuide.swift in Sources */,
 				442ADE021F612B4F002A16E4 /* ConstraintMakerEditable.swift in Sources */,
-				442ADDEE1F612B4F002A16E4 /* ColorExtension.swift in Sources */,
 				442ADDFB1F612B4F002A16E4 /* ConstraintInsetTarget.swift in Sources */,
 				442ADE041F612B4F002A16E4 /* ConstraintMakerFinalizable.swift in Sources */,
 				442ADDB81F612AFF002A16E4 /* ViewController.swift in Sources */,
@@ -468,6 +464,7 @@
 				442ADDC61F612AFF002A16E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
